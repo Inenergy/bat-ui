@@ -4,3 +4,4 @@ app/svelte.css
 app/renderer.js
 battery-raspbian*
 *.log
+config.json
