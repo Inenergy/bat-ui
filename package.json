@@ -44,7 +44,7 @@
     "usb-detection": "^4.7.0"
   },
   "build": {
-    "rebuildDependencies": false,
+    "npmRebuild": false,
     "linux": {
       "executableName": "bat-ui",
       "category": "education"
