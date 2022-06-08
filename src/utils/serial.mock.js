@@ -14,7 +14,7 @@ state[state.length - 2] = 40;
   setTimeout(() => {
     state[0] = 3;
     iv[1] = 5;
-    loopBatteries();
+    // loopBatteries();
   }, 7000);
 })();
 const iv = Array(IV_DATA.length).fill(0);
