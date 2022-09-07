@@ -1,3 +1,4 @@
+<!-- Страница с графиком -->
 <script>
   import Arrow from '../atoms/Arrow';
   import DcDc from '../atoms/DcDc';

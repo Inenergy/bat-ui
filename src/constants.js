@@ -1,18 +1,24 @@
 const IS_RPI = process.platform === 'linux' && process.arch == 'arm';
+
+// идентификаторы серийного порта на raspberry os и windows
 const PORT = {
   name: IS_RPI ? '/dev/serial0' : 'COM5',
   baudRate: 230400,
 };
+
+// массив разделителей в двоичном виде
 const SEPARATORS = Buffer.alloc(4);
 SEPARATORS.writeUInt16BE(1243);
 SEPARATORS.writeUInt16BE(9524, 2);
 
+// общие состояние приложения для перехода между страницами
 const STATES = {
   initial: 'select',
   battery: 'battery',
   energy: 'energy',
 };
 
+// двухбайтовые значения с автоматической нумерацией
 const IV_DATA = [
   'busVoltage',
   Array.from({ length: 6 }, (_, i) => 'voltage' + (i + 1)),
@@ -28,6 +34,7 @@ const IV_DATA = [
   'setLoad7',
 ].flat(2);
 
+// однобайтовые значения
 const STATE_DATA = [
   'type1',
   'type2',
@@ -48,9 +55,13 @@ const STATE_DATA = [
   'type7'
 ];
 
+// общая длина массива для проверки приема данных
 const DATA_BYTE_LENGTH =
   IV_DATA.length * 2 + STATE_DATA.length + SEPARATORS.length + 2;
 
+/* Комманды
+Либо просто массив для комманд без ввода данных
+Либо функция, которая принимает значение и возвращает массив для отправки */
 const COMMANDS = {
   turnOff: [4, 0],
   turnOn1: [8, 0],
@@ -79,6 +90,7 @@ const COMMANDS = {
   calibrateVoltage: [96, 0],
 };
 
+// типы батарей
 const BATTERY_TYPES = [
   void 0,
   'LiPol',
@@ -89,6 +101,7 @@ const BATTERY_TYPES = [
   'LTO',
 ];
 
+// ограничения напряжений для разных типов батарей в том же прядке что и в массиве сверху
 const VOLTAGE_CONSTRAINTS = [
   [],
   [3.5, 4.2],
@@ -99,6 +112,7 @@ const VOLTAGE_CONSTRAINTS = [
   [4.0, 5.6],
 ];
 
+// ограничения тока для разных типов батарей в том же прядке что и в массиве сверху
 const CURRENT_CONSTRAINTS = [
   [],
   [0.1, 1],
@@ -109,6 +123,7 @@ const CURRENT_CONSTRAINTS = [
   [0.1, 1],
 ]
 
+// общие ограничения полей ввода
 const CONSTRAINTS = {
   batCurrent: CURRENT_CONSTRAINTS,
   batVoltage: VOLTAGE_CONSTRAINTS,
@@ -116,10 +131,6 @@ const CONSTRAINTS = {
   offTime: [10, 2500],
   voltage: [12, 24],
 };
-
-const MODES = [{ symbol: 'I, A' }, { symbol: 'U, B' }];
-
-const OFF_MODES = ['U, B', 't, c'];
 
 module.exports = {
   IS_RPI,
@@ -131,8 +142,6 @@ module.exports = {
   COMMANDS,
   BATTERY_TYPES,
   CONSTRAINTS,
-  MODES,
-  OFF_MODES,
   DATA_BYTE_LENGTH,
   DEBOUNCED_STATE_DATA: STATE_DATA.slice(2, 10),
 };

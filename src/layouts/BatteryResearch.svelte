@@ -1,3 +1,4 @@
+<!-- Страница с каналами -->
 <script>
   import Select from '../molecules/Select';
   import Toggle from '../atoms/Toggle';
